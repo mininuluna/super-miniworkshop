@@ -20,10 +20,10 @@ server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
 
 app = dash.Dash(__name__, server=server)
 
-df = pd.read_csv('https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv')
-flower_setosa = pd.read_csv(r'C:\\Users\\conse\Documents\\GitHub\super-miniworkshop\data\setosa.csv')
-flower_versicolor = pd.read_csv(r'C:\\Users\\conse\Documents\\GitHub\super-miniworkshop\data\\versicolor.csv')
-flower_virginica = pd.read_csv(r'C:\\Users\\conse\Documents\\GitHub\super-miniworkshop\data\\virginica.csv')
+df = pd.read_csv('data/iris.csv', encoding='utf-8')
+flower_setosa = pd.read_csv('data/setosa.csv', encoding='utf-8')
+flower_versicolor = pd.read_csv('data/versicolor.csv', encoding='utf-8')
+flower_virginica = pd.read_csv('data/virginica.csv', encoding='utf-8')
 
 fig = px.scatter(df, x="sepal.width", y="sepal.length", color="variety",
                  size='petal.length', hover_data=['petal.width'])
