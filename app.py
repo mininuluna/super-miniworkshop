@@ -50,9 +50,9 @@ app.layout = html.Div([
             step=None,
             value=1,
             marks={
-                0: 'Setosa', 'style': {'color': '#ffffff'},
-                1: 'Versicolor', 'style': {'color': '#ffffff'},
-                2: 'Virginica', 'style': {'color': '#ffffff'},
+                0: {'label': 'Setosa', 'style': {'color': '#ffffff'}},
+                1: {'label': 'Versicolor', 'style': {'color': '#ffffff'}},
+                2: {'label': 'Virginica', 'style': {'color': '#ffffff'}},
             },
         ),
 
