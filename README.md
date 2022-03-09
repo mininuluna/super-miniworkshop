@@ -1,5 +1,7 @@
 # super-miniworkshop
+
 Description
+
 Dataset Information
 
 Samples arrive periodically as Dr. Wolberg reports his clinical cases. The database therefore reflects this chronological grouping of the data. This grouping information appears immediately below, having been removed from the data itself:
@@ -44,4 +46,4 @@ Wolberg, W.H., & Mangasarian, O.L. (1990). Multisurface method of pattern separa
 Zhang, J. (1992). Selecting typical instances in instance-based learning. In Proceedings of the Ninth International Machine Learning Conference (pp. 470--479). Aberdeen, Scotland: Morgan Kaufmann.
 Inspiration
 
-Predict from the dataset whether a person has Breast Cancer: Benign or Malignant .
+Predict from the dataset whether a person has Breast Cancer: Benign or Malignant.
