@@ -25,7 +25,7 @@ flower_setosa = pd.read_csv('data/setosa.csv', encoding='utf-8')
 flower_versicolor = pd.read_csv('data/versicolor.csv', encoding='utf-8')
 flower_virginica = pd.read_csv('data/virginica.csv', encoding='utf-8')
 
-setosa_pic = '../images/Irissetosa1.jpg'
+setosa_pic = 'https://64.media.tumblr.com/c95a69d415fb752720487a499e7d12b0/4b146389ff59fa88-e0/s2048x3072/dfca33126e23136b23865148be61dc22043cbe1a.jpg'
 
 fig = px.scatter(df, x="sepal.width", y="sepal.length", color="variety",
                  size='petal.length', hover_data=['petal.width'])
@@ -69,15 +69,15 @@ app.layout = html.Div([
     ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
     html.Div([
         html.Div([
-            html.P('IMAGE TESTING', style={'textAlign': 'center',
+            html.P('Flower Image', style={'textAlign': 'center',
                                            'color': colors['text']}),
             html.Img(id='image_output',
                     style={'display': 'block', 'margin-left': 'auto',
-            'margin-right': 'auto', 'max-width': '75%',
+            'margin-right': 'auto', 'max-width': '25%',
                             'height': '300'})
         ], style={'margin': '0 auto', 'width': '100%'}),
         html.Div([
-            html.P('IMAGE DR. PATRICK TESTING', style={'textAlign': 'center',
+            html.P('Type of Flower Graph', style={'textAlign': 'center',
                                                        'color': colors['text']}),
             html.P(style={'textAlign': 'center',
                           'color': colors['text']}),
