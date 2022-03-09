@@ -36,7 +36,7 @@ colors['text']
 app.layout = html.Div([
     html.Div(
         children=[
-            html.H1('Hello Dash!', style={'textAlign': 'center', 'color': colors['text']}
+            html.H1('Hello Pretty Flowers!', style={'textAlign': 'center', 'color': '#02075d'}
                     )],
         style={'marginLeft': 10, 'marginRight': 10, 'marginTop': 0, 'marginBottom': 10,
                'backgroundColor': '#F7FBFE',
@@ -44,7 +44,7 @@ app.layout = html.Div([
     html.Div([
         # Changed Dropdown Menus to Sliders
         html.H3('Select the Type of Flower:',
-                className="app-header--menu"),
+                style={'textAlign': 'center', 'color': colors['text']}),
         dcc.Slider(
             id='slider',
             min=0,
@@ -52,15 +52,14 @@ app.layout = html.Div([
             step=None,
             value=1,
             marks={
-                0: {'label': 'Setosa', 'style': {'color': '#ffffff'}},
-                1: {'label': 'Versicolor', 'style': {'color': '#ffffff'}},
-                2: {'label': 'Virginica', 'style': {'color': '#ffffff'}},
+                0: {'label': 'Setosa', 'style': {'color': colors['text']}},
+                1: {'label': 'Versicolor', 'style': {'color': colors['text']}},
+                2: {'label': 'Virginica', 'style': {'color': colors['text']}},
             },
         ),
-
         html.Div([
-            html.P(style={'textAlign': 'center',
-                          'color': colors['text']}),
+            html.H3('Graph of All the Types of Flowers',
+                style={'textAlign': 'center', 'color': colors['text']}),
             dcc.Graph(
                 id='main-plot',
                 figure=fig
@@ -69,18 +68,14 @@ app.layout = html.Div([
     ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
     html.Div([
         html.Div([
-            html.P('Flower Image', style={'textAlign': 'center',
-                                           'color': colors['text']}),
+            html.H3('Flower Image', style={'textAlign': 'center', 'color': colors['text']}),
             html.Img(id='image_output',
                     style={'display': 'block', 'margin-left': 'auto',
-            'margin-right': 'auto', 'max-width': '25%',
+            'margin-right': 'auto', 'max-width': '20%',
                             'height': '300'})
         ], style={'margin': '0 auto', 'width': '100%'}),
         html.Div([
-            html.P('Type of Flower Graph', style={'textAlign': 'center',
-                                                       'color': colors['text']}),
-            html.P(style={'textAlign': 'center',
-                          'color': colors['text']}),
+            html.H3('Type of Flower Graph', style={'textAlign': 'center', 'color': colors['text']}),
             dcc.Graph(
                 id='graph',
             )
@@ -117,15 +112,15 @@ def plot(flower):
     flowertype = flower
 
     if flowertype == 0:
-        return px.scatter(flower_setosa, x="sepal.width", y="sepal.length", color="variety",
-                 size='petal.length', hover_data=['petal.width'])
+        return px.scatter(flower_setosa, x="sepal.width", y="sepal.length", color='petal.width',
+                 size='petal.length', hover_data=['variety'])
 
     elif flowertype == 1:
-        return px.scatter(flower_versicolor, x="sepal.width", y="sepal.length", color="variety",
-                 size='petal.length', hover_data=['petal.width'])
+        return px.scatter(flower_versicolor, x="sepal.width", y="sepal.length", color='petal.width',
+                 size='petal.length', hover_data=['variety'])
     else:
-        return px.scatter(flower_virginica,  x="sepal.width", y="sepal.length", color="variety",
-                 size='petal.length', hover_data=['petal.width'])
+        return px.scatter(flower_virginica,  x="sepal.width", y="sepal.length", color="petal.width",
+                 size='petal.length', hover_data=['variety'])
 
 if __name__ == '__main__':
     app.server.run(debug=True)
