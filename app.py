@@ -25,6 +25,8 @@ flower_setosa = pd.read_csv('data/setosa.csv', encoding='utf-8')
 flower_versicolor = pd.read_csv('data/versicolor.csv', encoding='utf-8')
 flower_virginica = pd.read_csv('data/virginica.csv', encoding='utf-8')
 
+setosa_pic = 'images/Irissetosa1.jpg'
+
 fig = px.scatter(df, x="sepal.width", y="sepal.length", color="variety",
                  size='petal.length', hover_data=['petal.width'])
 
@@ -69,10 +71,10 @@ app.layout = html.Div([
         html.Div([
             html.P('IMAGE TESTING', style={'textAlign': 'center',
                                            'color': colors['text']}),
-            #html.Img(id='image_output',
-            #        style={'display': 'block', 'margin-left': 'auto',
-            #'margin-right': 'auto', 'max-width': '75%',
-            #                'height': '300'})
+            html.Img(id='image_output',
+                    style={'display': 'block', 'margin-left': 'auto',
+            'margin-right': 'auto', 'max-width': '75%',
+                            'height': '300'})
         ], style={'margin': '0 auto', 'width': '100%'}),
         html.Div([
             html.P('IMAGE DR. PATRICK TESTING', style={'textAlign': 'center',
@@ -86,6 +88,25 @@ app.layout = html.Div([
     ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
 ], style={'backgroundColor': colors['background']}
 )
+
+@app.callback(
+   Output('image_output', 'src'),
+    Input('slider', 'value')
+)
+def plot(flower):
+
+    flowertype = flower
+
+    src = setosa_pic
+
+    if flowertype == 0:
+        return setosa_pic
+
+    elif flowertype == 1:
+        return setosa_pic
+        
+    else:
+        return setosa_pic
 
 @app.callback(
     Output('graph', 'figure'),
