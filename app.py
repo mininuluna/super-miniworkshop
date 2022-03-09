@@ -30,6 +30,23 @@ setosa_pic = 'https://64.media.tumblr.com/c95a69d415fb752720487a499e7d12b0/4b146
 fig = px.scatter(df, x="sepal.width", y="sepal.length", color="variety",
                  size='petal.length', hover_data=['petal.width'])
 
+fig3D = go.Figure(data=go.Scatter3d(
+    x=df['sepal.width'],
+    y=df['sepal.length'],
+    z=df['petal.length'],
+    text=df['variety'],
+    mode='markers',
+    marker=dict(
+        sizemode='diameter',
+        sizeref=0.5,
+        size=df['petal.length'],
+        color = df['petal.width'],
+        colorscale = 'Viridis',
+        colorbar_title = 'Petal<br>Width',
+        line_color='rgb(140, 140, 170)'
+    )
+))
+
 colors = {'background': '#111111', 'text': '#7FDBFF'}
 colors['text']
 
@@ -41,7 +58,6 @@ app.layout = html.Div([
         style={'marginLeft': 10, 'marginRight': 10, 'marginTop': 0, 'marginBottom': 10,
                'backgroundColor': '#F7FBFE',
                'border': 'thin lightgrey dashed'}),
-    html.Div([
         # Changed Dropdown Menus to Sliders
         html.H3('Select the Type of Flower:',
                 style={'textAlign': 'center', 'color': colors['text']}),
@@ -57,22 +73,27 @@ app.layout = html.Div([
                 2: {'label': 'Virginica', 'style': {'color': colors['text']}},
             },
         ),
+    html.Div([
         html.Div([
             html.H3('Graph of All the Types of Flowers',
                 style={'textAlign': 'center', 'color': colors['text']}),
             dcc.Graph(
                 id='main-plot',
-                figure=fig
-            ),
-        ], style={'margin': '0 auto', 'width': '100%'}),
+                figure=fig),
+            html.H3('Graph of All the Types of Flowers',
+                style={'textAlign': 'center', 'color': colors['text']}),
+            dcc.Graph(
+                id='secondary-plot',
+                figure=fig3D)
+            ], style={'margin': '0 auto', 'width': '100%'}),
     ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
     html.Div([
         html.Div([
             html.H3('Flower Image', style={'textAlign': 'center', 'color': colors['text']}),
             html.Img(id='image_output',
                     style={'display': 'block', 'margin-left': 'auto',
-            'margin-right': 'auto', 'max-width': '20%',
-                            'height': '300'})
+            'margin-right': 'auto', 'max-width': 'auto',
+                            'height': 450})
         ], style={'margin': '0 auto', 'width': '100%'}),
         html.Div([
             html.H3('Type of Flower Graph', style={'textAlign': 'center', 'color': colors['text']}),
@@ -92,16 +113,14 @@ def plot(flower):
 
     flowertype = flower
 
-    src = setosa_pic
-
     if flowertype == 0:
         return setosa_pic
 
     elif flowertype == 1:
-        return setosa_pic
+        return setosa_pic #CHANGE THIS
 
     else:
-        return setosa_pic
+        return setosa_pic #CHANGE THIS
 
 @app.callback(
     Output('graph', 'figure'),
