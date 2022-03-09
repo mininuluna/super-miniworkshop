@@ -25,7 +25,7 @@ flower_setosa = pd.read_csv('data/setosa.csv', encoding='utf-8')
 flower_versicolor = pd.read_csv('data/versicolor.csv', encoding='utf-8')
 flower_virginica = pd.read_csv('data/virginica.csv', encoding='utf-8')
 
-setosa_pic = 'images/Irissetosa1.jpg'
+setosa_pic = '../images/Irissetosa1.jpg'
 
 fig = px.scatter(df, x="sepal.width", y="sepal.length", color="variety",
                  size='petal.length', hover_data=['petal.width'])
@@ -104,7 +104,7 @@ def plot(flower):
 
     elif flowertype == 1:
         return setosa_pic
-        
+
     else:
         return setosa_pic
 
