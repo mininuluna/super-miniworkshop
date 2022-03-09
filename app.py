@@ -48,11 +48,11 @@ app.layout = html.Div([
             min=0,
             max=2,
             step=None,
-            value=[0, 1, 2],
+            value=1,
             marks={
-                0: {'label': 'Setosa',  'style': {'color': '#ffffff'}},
-                1: {'label': 'Versicolor', 'style': {'color': '#ffffff'}},
-                2: {'label': 'Virginica', 'style': {'color': '#ffffff'}},
+                0: 'Setosa', 'style': {'color': '#ffffff'},
+                1: 'Versicolor', 'style': {'color': '#ffffff'},
+                2: 'Virginica', 'style': {'color': '#ffffff'},
             },
         ),
 
@@ -80,35 +80,31 @@ app.layout = html.Div([
             html.P(style={'textAlign': 'center',
                           'color': colors['text']}),
             dcc.Graph(
-                id='plot'
+                id='graph',
             )
         ], style={'margin': '0 auto', 'width': '100%'})
     ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
 ], style={'backgroundColor': colors['background']}
 )
-#index_vals = df['class'].astype('category').cat.codes
 
-@app.callback([
-    Output('graph', 'figure')
-    ], [Input('slider', 'value')]
+@app.callback(
+    Output('graph', 'figure'),
+    Input('slider', 'value')
 )
 def plot(flower):
 
-    flowertype = flower_setosa
+    flowertype = flower
 
-    if flower == 0:
-        flowertype = flower_setosa
-    elif flower == 1:
-        flowertype = flower_versicolor
-    elif flower == 2:
-        flowertype = flower_virginica
-    #print(flower)
-    
-    figure = px.scatter(flowertype, x="sepal.width", y="sepal.length", color="variety",
+    if flowertype == 0:
+        return px.scatter(flower_setosa, x="sepal.width", y="sepal.length", color="variety",
                  size='petal.length', hover_data=['petal.width'])
 
-    #print(figure)
-    return figure
+    elif flowertype == 1:
+        return px.scatter(flower_versicolor, x="sepal.width", y="sepal.length", color="variety",
+                 size='petal.length', hover_data=['petal.width'])
+    else:
+        return px.scatter(flower_virginica,  x="sepal.width", y="sepal.length", color="variety",
+                 size='petal.length', hover_data=['petal.width'])
 
 if __name__ == '__main__':
     app.server.run(debug=True)
