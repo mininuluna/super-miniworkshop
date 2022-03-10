@@ -143,15 +143,18 @@ def plot(flower):
 
     flowertype = flower
 
+    prettyFlower = flower_setosa
+
     if flowertype == 0:
-        return px.scatter(flower_setosa, x="sepal.width", y="sepal.length", color='petal.width',
-                 size='petal.length', hover_data=['variety'], template='plotly_white')
+        prettyFlower = flower_setosa
 
     elif flowertype == 1:
-        return px.scatter(flower_versicolor, x="sepal.width", y="sepal.length", color='petal.width',
-                 size='petal.length', hover_data=['variety'], template='plotly_white')
+        prettyFlower = flower_versicolor
+
     else:
-        return px.scatter(flower_virginica,  x="sepal.width", y="sepal.length", color="petal.width",
+        prettyFlower = flower_virginica
+
+    return px.scatter(prettyFlower, x="sepal.width", y="sepal.length", color='petal.width',
                  size='petal.length', hover_data=['variety'], template='plotly_white')
 
 if __name__ == '__main__':
