@@ -1,29 +1,37 @@
 import os
 from random import randint
 
-import dash
+import dash 
 from dash import dcc
 from dash import html
+
 import flask
 import pandas as pd
+
 import plotly.express as px
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output
 
+#To run the flask application
 server = flask.Flask(__name__)
 server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
 
+#To run the application within Dash from Plotly
 app = dash.Dash(__name__, server=server)
 
+#Reading the csv file to be used
 df = pd.read_csv('data/iris.csv', encoding='utf-8')
 
+#Reading more csv files to be used, but for each type of flower
 flower_setosa = pd.read_csv('data/setosa.csv', encoding='utf-8')
 flower_versicolor = pd.read_csv('data/versicolor.csv', encoding='utf-8')
 flower_virginica = pd.read_csv('data/virginica.csv', encoding='utf-8')
 
+#Declaring each variable with the image source path from the internet for each type of Flower
 setosa_pic = 'https://64.media.tumblr.com/cf75c154fc10358140397aec64aa643c/d9c7afeefef484e3-70/s2048x3072/4b528d3565ab3a89ffabf202d618cf1982ed1f68.jpg'
 versicolor_pic = 'https://64.media.tumblr.com/7e7735db0afd9982f6dd0dd3872d18b2/tumblr_orki97Hid31uvqn0ko1_1280.jpg'
 virginica_pic = 'https://64.media.tumblr.com/2cc0b486dce284aa1310349ca5d3a6bc/eac71ab1809a717b-3e/s2048x3072/e0d19ef89609cddd2a3198da45ce2222625d7791.jpg'
+
 
 fig = px.scatter(df, x="sepal.width", y="sepal.length", color="variety",
                  size='petal.length', hover_data=['petal.width'], template='plotly_white')
@@ -32,9 +40,6 @@ fig3D = go.Figure(data=go.Scatter3d(
     x=df['sepal.width'],
     y=df['sepal.length'],
     z=df['petal.length'],
-    hoverinfo = 'all',
-    hovertext = ['Sepal Width', 'Sepal Length', 'Petal Length'],
-    text=['Sepal Width', 'Sepal Length', 'Petal Length'],
     mode='markers',
     marker=dict(
         sizemode='diameter',
@@ -151,17 +156,22 @@ def plot(flower):
 
     prettyFlower = flower_setosa
 
+    nameFlower = "Setosa"
+
     if flowertype == 0:
         prettyFlower = flower_setosa
+        nameFlower = "Setosa"
 
     elif flowertype == 1:
         prettyFlower = flower_versicolor
+        nameFlower = "Versicolor"
 
     else:
         prettyFlower = flower_virginica
+        nameFlower = "Virginica"
 
     return px.scatter(prettyFlower, x="sepal.width", y="sepal.length", color='petal.width',
-                 size='petal.length', hover_data=['variety'], template='plotly_white')
+                 size='petal.length', hover_data=['variety'], template='plotly_white', title=nameFlower)
 
 if __name__ == '__main__':
     app.server.run(debug=True)
