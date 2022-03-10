@@ -8,8 +8,12 @@ from dash import dcc
 from dash import html
 import flask
 import pandas as pd
+import numpy as np
 import plotly.express as px
 import plotly.graph_objs as go
+from sklearn.decomposition import PCA
+from sklearn import datasets
+from sklearn.preprocessing import StandardScaler
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 from pandas import DataFrame
@@ -21,6 +25,7 @@ server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
 app = dash.Dash(__name__, server=server)
 
 df = pd.read_csv('data/iris.csv', encoding='utf-8')
+
 flower_setosa = pd.read_csv('data/setosa.csv', encoding='utf-8')
 flower_versicolor = pd.read_csv('data/versicolor.csv', encoding='utf-8')
 flower_virginica = pd.read_csv('data/virginica.csv', encoding='utf-8')
@@ -31,14 +36,6 @@ virginica_pic = 'https://64.media.tumblr.com/2cc0b486dce284aa1310349ca5d3a6bc/ea
 
 fig = px.scatter(df, x="sepal.width", y="sepal.length", color="variety",
                  size='petal.length', hover_data=['petal.width'], template='plotly_white')
-
-sliders = [
-           dict(font={'size': 20}
-    )]
-
-fig.update_layout(
-    sliders = sliders
-)
 
 fig3D = go.Figure(data=go.Scatter3d(
     x=df['sepal.width'],
@@ -56,6 +53,32 @@ fig3D = go.Figure(data=go.Scatter3d(
         line_color='rgb(140, 140, 170)'
     )
 ))
+
+iris_features = ['sepal.length', 'sepal.width', 'petal.length', 'petal.width']
+X_iris = df[iris_features]
+
+pca_var = PCA(n_components=2)
+components = pca_var.fit_transform(X_iris)
+
+loadings_iris = pca_var.components_.T * np.sqrt(pca_var.explained_variance_)
+
+pca_Figure = px.scatter(components, x = 0, y = 1, color = df[iris_features])
+
+for i, feature in enumerate(iris_features):
+    fig.add_shape(
+        type='triangle',
+        x0=0, y0=0,
+        x1=loadings_iris[i, 0],
+        y1=loadings_iris[i, 1]
+    )
+    fig.add_annotation(
+        x=loadings_iris[i, 0],
+        y=loadings_iris[i, 1],
+        ax=0, ay=0,
+        xanchor="center",
+        yanchor="bottom",
+        text=feature,
+    )
 
 colors = {'background': '#394551', 'text': '#7FDBFF'}
 colors['text']
@@ -114,6 +137,15 @@ app.layout = html.Div([
                 id='graph',
             )
         ],  style={'margin': '0 auto', 'width': 750, 'height': 550}),
+    ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
+    html.Div([
+        html.Div([
+            html.H3('Scatter Graph to Visualize Loading of All Flowers',
+                style={'textAlign': 'center', 'color': colors['text']}),
+            dcc.Graph(
+                id='another-plot',
+                figure=pca_Figure)
+            ], style={'margin': '0 auto', 'width': 750, 'height': 250}),
     ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
 ], style={'backgroundColor': colors['background']}
 )
