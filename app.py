@@ -25,10 +25,20 @@ flower_setosa = pd.read_csv('data/setosa.csv', encoding='utf-8')
 flower_versicolor = pd.read_csv('data/versicolor.csv', encoding='utf-8')
 flower_virginica = pd.read_csv('data/virginica.csv', encoding='utf-8')
 
-setosa_pic = 'https://64.media.tumblr.com/c95a69d415fb752720487a499e7d12b0/4b146389ff59fa88-e0/s2048x3072/dfca33126e23136b23865148be61dc22043cbe1a.jpg'
+setosa_pic = 'https://64.media.tumblr.com/cf75c154fc10358140397aec64aa643c/d9c7afeefef484e3-70/s2048x3072/4b528d3565ab3a89ffabf202d618cf1982ed1f68.jpg'
+versicolor_pic = 'https://64.media.tumblr.com/7e7735db0afd9982f6dd0dd3872d18b2/tumblr_orki97Hid31uvqn0ko1_1280.jpg'
+virginica_pic = 'https://64.media.tumblr.com/2cc0b486dce284aa1310349ca5d3a6bc/eac71ab1809a717b-3e/s2048x3072/e0d19ef89609cddd2a3198da45ce2222625d7791.jpg'
 
 fig = px.scatter(df, x="sepal.width", y="sepal.length", color="variety",
-                 size='petal.length', hover_data=['petal.width'])
+                 size='petal.length', hover_data=['petal.width'], template='plotly_white')
+
+sliders = [
+           dict(font={'size': 20}
+    )]
+
+fig.update_layout(
+    sliders = sliders
+)
 
 fig3D = go.Figure(data=go.Scatter3d(
     x=df['sepal.width'],
@@ -38,7 +48,7 @@ fig3D = go.Figure(data=go.Scatter3d(
     mode='markers',
     marker=dict(
         sizemode='diameter',
-        sizeref=0.5,
+        sizeref=0.25,
         size=df['petal.length'],
         color = df['petal.width'],
         colorscale = 'Viridis',
@@ -47,7 +57,7 @@ fig3D = go.Figure(data=go.Scatter3d(
     )
 ))
 
-colors = {'background': '#111111', 'text': '#7FDBFF'}
+colors = {'background': '#394551', 'text': '#7FDBFF'}
 colors['text']
 
 app.layout = html.Div([
@@ -61,6 +71,7 @@ app.layout = html.Div([
         # Changed Dropdown Menus to Sliders
         html.H3('Select the Type of Flower:',
                 style={'textAlign': 'center', 'color': colors['text']}),
+    html.Div(
         dcc.Slider(
             id='slider',
             min=0,
@@ -72,35 +83,37 @@ app.layout = html.Div([
                 1: {'label': 'Versicolor', 'style': {'color': colors['text']}},
                 2: {'label': 'Virginica', 'style': {'color': colors['text']}},
             },
-        ),
+            included=False
+        )
+    ),
     html.Div([
         html.Div([
-            html.H3('Graph of All the Types of Flowers',
+            html.H3('Scatter Graph of All the Types of Flowers',
                 style={'textAlign': 'center', 'color': colors['text']}),
             dcc.Graph(
                 id='main-plot',
                 figure=fig),
-            html.H3('Graph of All the Types of Flowers',
+            html.H3('3D Bubble Scatter Graph of All the Types of Flowers',
                 style={'textAlign': 'center', 'color': colors['text']}),
             dcc.Graph(
                 id='secondary-plot',
                 figure=fig3D)
-            ], style={'margin': '0 auto', 'width': '100%'}),
+            ], style={'margin': '0 auto', 'width': 750, 'height': 250}),
     ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
     html.Div([
         html.Div([
             html.H3('Flower Image', style={'textAlign': 'center', 'color': colors['text']}),
             html.Img(id='image_output',
                     style={'display': 'block', 'margin-left': 'auto',
-            'margin-right': 'auto', 'max-width': 'auto',
+            'margin-right': 'auto', 'max-width': 500,
                             'height': 450})
         ], style={'margin': '0 auto', 'width': '100%'}),
         html.Div([
-            html.H3('Type of Flower Graph', style={'textAlign': 'center', 'color': colors['text']}),
+            html.H3('Type of Flower Scatter Graph', style={'textAlign': 'center', 'color': colors['text']}),
             dcc.Graph(
                 id='graph',
             )
-        ], style={'margin': '0 auto', 'width': '100%'})
+        ],  style={'margin': '0 auto', 'width': 750, 'height': 550}),
     ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
 ], style={'backgroundColor': colors['background']}
 )
@@ -117,10 +130,10 @@ def plot(flower):
         return setosa_pic
 
     elif flowertype == 1:
-        return setosa_pic #CHANGE THIS
+        return versicolor_pic
 
     else:
-        return setosa_pic #CHANGE THIS
+        return virginica_pic
 
 @app.callback(
     Output('graph', 'figure'),
@@ -132,14 +145,14 @@ def plot(flower):
 
     if flowertype == 0:
         return px.scatter(flower_setosa, x="sepal.width", y="sepal.length", color='petal.width',
-                 size='petal.length', hover_data=['variety'])
+                 size='petal.length', hover_data=['variety'], template='plotly_white')
 
     elif flowertype == 1:
         return px.scatter(flower_versicolor, x="sepal.width", y="sepal.length", color='petal.width',
-                 size='petal.length', hover_data=['variety'])
+                 size='petal.length', hover_data=['variety'], template='plotly_white')
     else:
         return px.scatter(flower_virginica,  x="sepal.width", y="sepal.length", color="petal.width",
-                 size='petal.length', hover_data=['variety'])
+                 size='petal.length', hover_data=['variety'], template='plotly_white')
 
 if __name__ == '__main__':
     app.server.run(debug=True)
