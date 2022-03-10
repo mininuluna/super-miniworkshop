@@ -32,10 +32,11 @@ setosa_pic = 'https://64.media.tumblr.com/cf75c154fc10358140397aec64aa643c/d9c7a
 versicolor_pic = 'https://64.media.tumblr.com/7e7735db0afd9982f6dd0dd3872d18b2/tumblr_orki97Hid31uvqn0ko1_1280.jpg'
 virginica_pic = 'https://64.media.tumblr.com/2cc0b486dce284aa1310349ca5d3a6bc/eac71ab1809a717b-3e/s2048x3072/e0d19ef89609cddd2a3198da45ce2222625d7791.jpg'
 
-
+#Scatter plot graph with all the flowers types in it
 fig = px.scatter(df, x="sepal.width", y="sepal.length", color="variety",
                  size='petal.length', hover_data=['petal.width'], template='plotly_white')
 
+#3D Scatter plot graph with all the flowers types in it
 fig3D = go.Figure(data=go.Scatter3d(
     x=df['sepal.width'],
     y=df['sepal.length'],
@@ -52,6 +53,7 @@ fig3D = go.Figure(data=go.Scatter3d(
     )
 ))
 
+#3D Scatter plot graph layout
 fig3D.update_layout(scene = dict(
                     xaxis_title='Sepal Width',
                     yaxis_title='Sepal Length',
@@ -59,9 +61,11 @@ fig3D.update_layout(scene = dict(
                     width=250,
                     margin=dict(r=10, b=10, l=10, t=10))
 
+#These are the colors for the text of the whole Dash web app
 colors = {'background': '#394551', 'text': '#7FDBFF'}
 colors['text']
 
+#The Dash Wep App Layout starts here
 app.layout = html.Div([
     html.Div(
         children=[
@@ -70,11 +74,10 @@ app.layout = html.Div([
         style={'marginLeft': 10, 'marginRight': 10, 'marginTop': 0, 'marginBottom': 10,
                'backgroundColor': '#F7FBFE',
                'border': 'thin lightgrey dashed'}),
-        # Changed Dropdown Menus to Sliders
         html.H3('Select the Type of Flower:',
                 style={'textAlign': 'center', 'color': colors['text']}),
     html.Div(
-        dcc.Slider(
+        dcc.Slider( #The slider is set-up here to choose which type of flower to display as an image and the scatter plot
             id='slider',
             min=0,
             max=2,
@@ -89,7 +92,7 @@ app.layout = html.Div([
         )
     ),
     html.Div([
-        html.Div([
+        html.Div([ #All the flower types in one scatter graph
             html.H3('Scatter Graph of All the Types of Flowers',
                 style={'textAlign': 'center', 'color': colors['text']}),
             dcc.Graph(
@@ -97,38 +100,30 @@ app.layout = html.Div([
                 figure=fig),
             html.H3('3D Bubble Scatter Graph of All the Types of Flowers',
                 style={'textAlign': 'center', 'color': colors['text']}),
-            dcc.Graph(
+            dcc.Graph( #All the flower types in one 3D scatter graph
                 id='secondary-plot',
                 figure=fig3D)
             ], style={'margin': '0 auto', 'width': 750, 'height': 250}),
     ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
     html.Div([
-        html.Div([
+        html.Div([ #The flower images are displayed here and are selected with the slider
             html.H3('Flower Image', style={'textAlign': 'center', 'color': colors['text']}),
             html.Img(id='image_output',
                     style={'display': 'block', 'margin-left': 'auto',
             'margin-right': 'auto', 'max-width': 500,
                             'height': 450})
         ], style={'margin': '0 auto', 'width': '100%'}),
-        html.Div([
+        html.Div([ #The flower image for each flower that gets selected in the slider is displayed here
             html.H3('Type of Flower Scatter Graph', style={'textAlign': 'center', 'color': colors['text']}),
             dcc.Graph(
                 id='graph',
             )
         ],  style={'margin': '0 auto', 'width': 750, 'height': 550}),
     ], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
-    #html.Div([
-        #html.Div([
-            #html.H3('Scatter Graph to Visualize Loading of All Flowers',
-            #    style={'textAlign': 'center', 'color': colors['text']}),
-            #dcc.Graph(
-            #    id='another-plot',
-            #    figure=pca_Figure)
-            #], style={'margin': '0 auto', 'width': 750, 'height': 250}),
-    #], style={'display': 'inline-block', 'verticalAlign': 'top', 'width': '50%'}),
 ], style={'backgroundColor': colors['background']}
 )
 
+#Callback that takes the slider input value and outputs the image source of different flowers
 @app.callback(
    Output('image_output', 'src'),
     Input('slider', 'value')
@@ -146,6 +141,7 @@ def plot(flower):
     else:
         return virginica_pic
 
+#Callback that takes the slider input value and outputs the graph for each type of flower
 @app.callback(
     Output('graph', 'figure'),
     Input('slider', 'value')
